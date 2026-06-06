@@ -1,44 +1,28 @@
 ---
-- name: Deploy Angular Application
+- name: Deploy Angular App
   hosts: webservers
   become: yes
 
   tasks:
 
-    - name: Install NodeJS
-      package:
-        name: nodejs
-        state: present
-
-    - name: Install npm
-      package:
-        name: npm
-        state: present
-
-    - name: Create deployment directory
-      file:
-        path: /opt/angular-app
-        state: directory
-
-    - name: Clone repository
+    - name: Clone Repository
       git:
-        repo: https://github.com/your-org/my-first-angular-app.git
+        repo: https://github.com/piyushpingle55/TestAngularApp.git
         dest: /opt/angular-app
         version: main
-        force: yes
 
-    - name: Install npm packages
+    - name: Install Dependencies
       command: npm install
       args:
         chdir: /opt/angular-app
 
-    - name: Build Angular
+    - name: Build Application
       command: npm run build
       args:
         chdir: /opt/angular-app
 
-    - name: Copy dist files
+    - name: Copy Build Files
       copy:
         src: /opt/angular-app/dist/
-        dest: /var/www/angular-app/
+        dest: /var/www/html/
         remote_src: yes
